@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Select Products to Order</title>
-<link rel="icon" type="image/png" href="images/favicon.png" sizes="96x96">
-<link rel="shortcut icon" type="image/png" href="images/favicon.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="images/favicon.png" sizes="96x96">
+  <link rel="shortcut icon" type="image/png" href="images/favicon.png" sizes="96x96">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -290,7 +290,7 @@
 
     <!-- Product 6 -->
     <div class="product">
-      <img src="images/product6.jpg" alt="Lemon Fresh Dishwash">
+      <img src="images/product61.jpg" alt="Lemon Fresh Dishwash">
       <h3>Lemon Fresh Dishwash</h3>
       <p>A rich lemon formula that removes tough grease while leaving a natural citrus shine (900 ml).</p>
 
@@ -369,9 +369,17 @@
       const selectedOption = combo.options[combo.selectedIndex];
       const newPrice = parseFloat(selectedOption.value);
       const input = combo.parentElement.querySelector('.quantity-control input');
+      const productImg = combo.parentElement.querySelector('img');
 
       input.dataset.price = newPrice.toFixed(2);
       input.dataset.name = selectedOption.dataset.name;
+
+      // ✅ Show product61.jpg for Twin Pack, product6.jpg for Single Bottle
+      if (selectedOption.text.includes("Twin Pack")) {
+        productImg.src = "images/product61.jpg";
+      } else {
+        productImg.src = "images/product6.jpg";
+      }
 
       updateTotal();
       checkForm();
