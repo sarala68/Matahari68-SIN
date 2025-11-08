@@ -4,18 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Select Products to Order</title>
+<link rel="icon" type="image/png" href="images/favicon.png" sizes="96x96">
+<link rel="shortcut icon" type="image/png" href="images/favicon.png" sizes="96x96">
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #000; /* page background black */
+      background-color: #000;
       margin: 0;
       padding: 20px;
-      color: #fff; /* default text color white */
+      color: #fff;
     }
 
     h2 {
       text-align: center;
-      color: #25D366; /* visible on black */
+      color: #25D366;
       margin-bottom: 25px;
       display: inline-block;
       border-bottom: 2px solid #25D366;
@@ -30,7 +32,7 @@
     .form-section {
       max-width: 600px;
       margin: 0 auto 30px;
-      background: #111; /* form background dark */
+      background: #111;
       padding: 20px;
       border-radius: 10px;
       border: 1px solid #555;
@@ -68,11 +70,10 @@
     }
 
     .product {
-      background: #111; /* product card background black */
+      background: #111;
       border: 1px solid #555;
       border-radius: 10px;
       width: 260px;
-      height: 420px;
       text-align: center;
       box-shadow: 0 2px 5px rgba(255,255,255,0.1);
       padding: 15px;
@@ -91,7 +92,7 @@
     }
 
     .product h3, .product p, .price {
-      color: #fff; /* text inside product cards white */
+      color: #fff;
     }
 
     .quantity-control {
@@ -188,7 +189,6 @@
       .product {
         width: 90%;
         max-width: 350px;
-        height: auto;
       }
 
       .product img {
@@ -221,7 +221,7 @@
     <div class="product">
       <img src="images/product1.jpg" alt="Floor Cleaner Lavender">
       <h3>Floor Cleaner Lavender</h3>
-      <p>Gentle lavender fragrance with powerful cleaning for every floor surface.</p>
+      <p>Gentle lavender fragrance with powerful cleaning for every floor surface (1 Liter).</p>
       <p class="price">Price: S$ 9.90</p>
       <div class="quantity-control">
         <button onclick="changeQty(this, -1)">-</button>
@@ -234,11 +234,24 @@
     <div class="product">
       <img src="images/product4.jpg" alt="Floor Cleaner Sandalwood">
       <h3>Floor Cleaner Sandalwood</h3>
-      <p>Refreshing sandalwood scent with deep cleaning formula for a spotless finish.</p>
+      <p>Refreshing sandalwood scent with deep cleaning formula for a spotless finish (1 Liter).</p>
       <p class="price">Price: S$ 9.90</p>
       <div class="quantity-control">
         <button onclick="changeQty(this, -1)">-</button>
         <input type="number" value="0" min="0" data-price="9.90" data-name="Floor Cleaner Sandalwood - S$ 9.90">
+        <button onclick="changeQty(this, 1)">+</button>
+      </div>
+    </div>
+
+    <!-- Product 5 -->
+    <div class="product">
+      <img src="images/product5.jpg" alt="Floor Cleaner Honey Dew">
+      <h3>Floor Cleaner Honey Dew</h3>
+      <p>Pleasant, fruity scent that revitalizes every room and leaves floors gleaming (1 Liter).</p>
+      <p class="price">Price: S$ 9.90</p>
+      <div class="quantity-control">
+        <button onclick="changeQty(this, -1)">-</button>
+        <input type="number" value="0" min="0" data-price="9.90" data-name="Floor Cleaner Honey Dew - S$ 9.90">
         <button onclick="changeQty(this, 1)">+</button>
       </div>
     </div>
@@ -256,7 +269,7 @@
       </div>
     </div>
 
-    <!-- Product 3: Combo Dropdown, no separate price -->
+    <!-- Product 3 -->
     <div class="product">
       <img src="images/product3.jpg" alt="Javadhu Pal Sambrani">
       <h3>Javadhu Pal Sambrani</h3>
@@ -271,6 +284,25 @@
       <div class="quantity-control">
         <button onclick="changeQty(this, -1)">-</button>
         <input type="number" value="0" min="0" data-price="3.00" data-name="Javadhu Pal Sambrani (12 pcs) - S$ 3.00">
+        <button onclick="changeQty(this, 1)">+</button>
+      </div>
+    </div>
+
+    <!-- Product 6 -->
+    <div class="product">
+      <img src="images/product6.jpg" alt="Lemon Fresh Dishwash">
+      <h3>Lemon Fresh Dishwash</h3>
+      <p>A rich lemon formula that removes tough grease while leaving a natural citrus shine (900 ml).</p>
+
+      <label for="dishwashCombo" style="font-weight: bold; margin-top: 8px;">Select Combo:</label>
+      <select id="dishwashCombo" class="combo-select" onchange="updateDishwashPrice()">
+        <option value="7.50" data-name="Lemon Fresh Dishwash (Twin Pack) - S$ 7.50" selected>Twin Pack - S$ 7.50</option>
+        <option value="5.50" data-name="Lemon Fresh Dishwash (Single Bottle) - S$ 5.50">Single Bottle - S$ 5.50</option>
+      </select>
+
+      <div class="quantity-control">
+        <button onclick="changeQty(this, -1)">-</button>
+        <input type="number" value="0" min="0" data-price="7.50" data-name="Lemon Fresh Dishwash (Twin Pack) - S$ 7.50">
         <button onclick="changeQty(this, 1)">+</button>
       </div>
     </div>
@@ -321,6 +353,19 @@
 
     function updateSambraniPrice() {
       const combo = document.getElementById('sambraniCombo');
+      const selectedOption = combo.options[combo.selectedIndex];
+      const newPrice = parseFloat(selectedOption.value);
+      const input = combo.parentElement.querySelector('.quantity-control input');
+
+      input.dataset.price = newPrice.toFixed(2);
+      input.dataset.name = selectedOption.dataset.name;
+
+      updateTotal();
+      checkForm();
+    }
+
+    function updateDishwashPrice() {
+      const combo = document.getElementById('dishwashCombo');
       const selectedOption = combo.options[combo.selectedIndex];
       const newPrice = parseFloat(selectedOption.value);
       const input = combo.parentElement.querySelector('.quantity-control input');
